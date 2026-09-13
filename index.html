@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#103c31" />
+    <title>Vaultfolio — private wealth desk</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="assistant.css" />
+    <script defer src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="rail">
+        <a class="brand" href="#dashboard" aria-label="Vaultfolio dashboard"><span class="brand-mark">V</span><span>VAULTFOLIO</span></a>
+        <p class="rail-label">PRIVATE WEALTH DESK</p>
+        <nav class="nav" aria-label="Main navigation">
+          <button class="nav-link active" data-page="dashboard"><span>Overview</span></button>
+          <button class="nav-link" data-page="accounts"><span>Accounts</span><b id="accountCount">0</b></button>
+          <button class="nav-link" data-page="investments"><span>Investments</span><b id="investmentCount">0</b></button>
+          <button class="nav-link" data-page="subscriptions"><span>Subscriptions</span><b id="subscriptionCount">0</b></button>
+          <button class="nav-link" data-assistant-open><span>Vault assistant</span><b>AI</b></button>
+        </nav>
+        <div class="rail-bottom">
+          <button class="nav-link" data-page="manual"><span>Manual & privacy</span></button>
+          <span class="local-badge">LOCAL-FIRST</span>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow" id="sectionEyebrow">YOUR POSITION</p>
+            <h1 id="pageTitle">Good financial mornings.</h1>
+          </div>
+          <div class="top-actions"><span class="privacy-dot"><i></i> Private on this device</span><button class="button button-ink" data-action="open-qr-import">Import QR</button></div>
+        </header>
+
+        <section class="page active" id="dashboard">
+          <div class="position-card">
+            <div><p class="eyebrow">TOTAL TRACKED</p><strong id="totalTracked">$0.00</strong><p class="quiet" id="positionNote">Add your first account to begin.</p></div>
+            <button class="button button-gold" data-action="open-account">Add account</button>
+          </div>
+          <div class="quick-grid">
+            <button class="quick-action" data-action="open-transaction"><span class="quick-icon">↔</span><span><b>Record movement</b><small>Income, expense or transfer</small></span></button>
+            <button class="quick-action" data-action="open-investment"><span class="quick-icon">↗</span><span><b>Add investment</b><small>Track a holding or goal</small></span></button>
+            <button class="quick-action" data-action="open-subscription"><span class="quick-icon">◎</span><span><b>Add subscription</b><small>Never lose a renewal date</small></span></button>
+          </div>
+          <div class="split-grid">
+            <section class="panel"><div class="panel-head"><div><p class="eyebrow">ACCOUNTS</p><h2>Your liquidity</h2></div><button class="text-button" data-page-jump="accounts">Open accounts</button></div><div class="list" id="dashboardAccounts"></div></section>
+            <section class="panel"><div class="panel-head"><div><p class="eyebrow">NEXT RENEWAL</p><h2>Subscriptions</h2></div><button class="text-button" data-page-jump="subscriptions">Manage</button></div><div class="list" id="dashboardSubscriptions"></div></section>
+          </div>
+        </section>
+
+        <section class="page" id="accounts">
+          <div class="page-toolbar"><p class="quiet">Add balances, record movements, or bring account details in with a QR code.</p><button class="button button-gold" data-action="open-account">Add account</button></div>
+          <div class="account-grid" id="accountsList"></div>
+          <section class="panel transactions-panel"><div class="panel-head"><div><p class="eyebrow">ACTIVITY</p><h2>Recent movements</h2></div><button class="button button-ink" data-action="open-transaction">Record movement</button></div><div class="list" id="transactionsList"></div></section>
+        </section>
+
+        <section class="page" id="investments">
+          <div class="page-toolbar"><p class="quiet">Track positions and contributions. Orders are never placed from Vaultfolio.</p><button class="button button-gold" data-action="open-investment">Add investment</button></div>
+          <div class="metric-row"><div class="metric"><span>Invested</span><strong id="investedTotal">$0.00</strong></div><div class="metric"><span>Current value</span><strong id="investmentValue">$0.00</strong></div><div class="metric"><span>Return</span><strong id="investmentReturn">—</strong></div></div>
+          <div class="holding-list" id="investmentsList"></div>
+        </section>
+
+        <section class="page" id="subscriptions">
+          <div class="page-toolbar"><p class="quiet">One place for every recurring charge. Mark it paid or delete it when it is over.</p><button class="button button-gold" data-action="open-subscription">Add subscription</button></div>
+          <div class="metric-row"><div class="metric"><span>Monthly recurring</span><strong id="monthlySubscriptions">$0.00</strong></div><div class="metric"><span>Yearly estimate</span><strong id="yearlySubscriptions">$0.00</strong></div><div class="metric"><span>Active services</span><strong id="activeSubscriptions">0</strong></div></div>
+          <div class="subscription-list" id="subscriptionsList"></div>
+        </section>
+
+        <section class="page assistant-page" id="assistant">
+          <div class="assistant-intro"><div><p class="eyebrow">VAULT ASSISTANT</p><h2>Ask about your financial picture.</h2><p>Private, on-device guidance based only on the records you add to Vaultfolio.</p></div><span class="assistant-status"><i></i> No external access</span></div>
+          <div class="assistant-layout"><section class="assistant-panel"><div id="assistantMessages" class="assistant-messages" aria-live="polite"></div><form id="assistantForm" class="assistant-input"><input id="assistantQuestion" autocomplete="off" placeholder="Try: What is my monthly spending?" /><button class="button button-gold">Ask</button></form></section><aside class="assistant-prompts"><p class="eyebrow">QUICK QUESTIONS</p><button data-assistant-prompt="What is my total balance?">Total balance</button><button data-assistant-prompt="How much are my subscriptions?">Subscription cost</button><button data-assistant-prompt="How are my investments doing?">Investment return</button><button data-assistant-prompt="Show my accounts">Show accounts</button><p>This assistant never accesses your computer, bank login, files, or camera without a separate action you initiate.</p></aside></div>
+        </section>
+
+        <section class="page manual-page" id="manual">
+          <div class="manual-hero"><p class="eyebrow">A CALM, PRIVATE SYSTEM</p><h2>Everything you need,<br />explained separately.</h2><p>This manual keeps the workspace focused on action.</p></div>
+          <div class="manual-grid">
+            <article><span>01</span><h3>Accounts & movements</h3><p>Add balances manually, then log income, expenses or transfers. Your overview calculates the total from the current account balances.</p></article>
+            <article><span>02</span><h3>Investments</h3><p>Track what you own and its value. Vaultfolio does not execute trades and does not connect to a broker in this version.</p></article>
+            <article><span>03</span><h3>Subscriptions</h3><p>Add the billing amount, cadence and next renewal. Monthly and yearly costs are calculated automatically.</p></article>
+            <article><span>04</span><h3>QR import & share</h3><p>Use the QR button on an account to export its non-sensitive record. Import that code on another device. Camera scanning uses your browser only; paste is always available.</p></article>
+            <article><span>05</span><h3>Your privacy</h3><p>Your records are stored in this browser's local storage. No bank credentials, card numbers, or trade instructions are collected or sent by this app.</p></article>
+            <article><span>06</span><h3>Live bank connections</h3><p>Real bank or brokerage connections require a regulated provider and a secure authorization flow. Do not use a QR code as a substitute for bank authentication.</p></article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="entryDialog" class="dialog"><form method="dialog" id="entryForm"><div class="dialog-head"><div><p class="eyebrow" id="dialogEyebrow">NEW RECORD</p><h2 id="dialogTitle">Add account</h2></div><button aria-label="Close" class="icon-button" value="cancel">×</button></div><div id="formFields"></div><div class="dialog-actions"><button class="button button-quiet" value="cancel">Cancel</button><button class="button button-gold" id="formSubmit" value="default">Save</button></div></form></dialog>
+    <dialog id="qrDialog" class="dialog qr-dialog"><form method="dialog"><div class="dialog-head"><div><p class="eyebrow" id="qrEyebrow">ACCOUNT QR</p><h2 id="qrTitle">Share account</h2></div><button aria-label="Close" class="icon-button" value="cancel">×</button></div><div id="qrContent"></div><div class="dialog-actions"><button class="button button-quiet" value="cancel">Close</button></div></form></dialog>
+    <div id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+    <script src="assistant.js"></script>
+  </body>
+</html>
