@@ -1,13 +1,13 @@
 (() => {
   const $ = (s) => document.querySelector(s);
   const money = (n) => new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(Number(n || 0));
-  const getData = () => JSON.parse(localStorage.getItem('vaultfolio-v1') || '{"accounts":[],"investments":[],"subscriptions":[]}');
+  const getData = () => { try { const parsed = JSON.parse(localStorage.getItem('vaultfolio-v1') || '{"accounts":[],"investments":[],"subscriptions":[]}'); return {accounts:Array.isArray(parsed.accounts)?parsed.accounts:[],investments:Array.isArray(parsed.investments)?parsed.investments:[],subscriptions:Array.isArray(parsed.subscriptions)?parsed.subscriptions:[]}; } catch { return {accounts:[],investments:[],subscriptions:[]}; } };
   const message = (text, role = 'assistant') => { const host = $('#assistantMessages'); const el = document.createElement('div'); el.className = `message ${role}`; el.textContent = text; host.append(el); host.scrollTop = host.scrollHeight; };
   const answer = (question) => {
     const data = getData(), q = question.toLowerCase();
     const balance = data.accounts.reduce((n,a) => n + Number(a.balance || 0), 0);
     const subs = data.subscriptions.filter(s => s.active !== false);
-    const monthly = subs.reduce((n,s) => n + Number(s.amount || 0) / (s.cadence === 'yearly' ? 12 : s.cadence === 'weekly' ? .25 : 1), 0);
+    const monthly = subs.reduce((n,s) => n + Number(s.amount || 0) / (s.cadence === 'yearly' ? 12 : s.cadence === 'weekly' ? (1/4.333333) : 1), 0);
     const cost = data.investments.reduce((n,i) => n + Number(i.cost || 0), 0), value = data.investments.reduce((n,i) => n + Number(i.value || 0), 0);
     if (/hello|hi|help|what can/.test(q)) return 'I can summarize the accounts, investment positions, and recurring charges that you have added. Try a quick question on the right.';
     if (/account|balance|total|cash|show/.test(q)) return data.accounts.length ? `Your accounts total ${money(balance)} across ${data.accounts.length} record${data.accounts.length === 1 ? '' : 's'}. Open Accounts to update a balance or record a movement.` : 'You have not added an account yet. Use Add account from Overview to start.';
