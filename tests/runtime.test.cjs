@@ -7,6 +7,7 @@ const { JSDOM } = require('jsdom');
 const root = path.resolve(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const script = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
+const financeScript = fs.readFileSync(path.join(root, 'finance.js'), 'utf8');
 
 function startApp() {
   const dom = new JSDOM(html, { url: 'https://vaultfolio.example/', runScripts: 'outside-only' });
@@ -16,6 +17,7 @@ function startApp() {
     this.open = false;
     this.dispatchEvent(new window.Event('close'));
   };
+  window.eval(financeScript);
   window.eval(script);
   return {
     window,
@@ -76,7 +78,7 @@ test('QR import keeps only account fields and generates a fresh identifier', () 
     importRecord(app, { name: 'Imported account', institution: 'Example bank', type: 'Savings', balance: 40.75, id: '"><img src=x onerror=alert(1)>', extra: 'discard' });
     const [record] = app.records().accounts;
     assert.match(record.id, /^[0-9a-f-]{36}$/i);
-    assert.deepEqual(Object.keys(record).sort(), ['balance', 'id', 'institution', 'name', 'type']);
+    assert.deepEqual(Object.keys(record).sort(), ['balance', 'country', 'currency', 'id', 'institution', 'name', 'type']);
     assert.equal(record.name, 'Imported account');
     assert.equal(record.balance, 40.75);
     assert.equal(app.document.querySelector('#accountsList img'), null);

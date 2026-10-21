@@ -41,7 +41,7 @@
 
         <section class="page active" id="dashboard">
           <div class="position-card">
-            <div><p class="eyebrow">TOTAL TRACKED</p><strong id="totalTracked">$0.00</strong><p class="quiet" id="positionNote">Add your first account to begin.</p></div>
+            <div><p class="eyebrow">TOTAL TRACKED</p><strong id="totalTracked">$0.00</strong><p class="quiet" id="positionNote">Add your first account to begin.</p><p class="currency-note">Totals are shown separately by currency.</p></div>
             <button class="button button-gold" data-action="open-account">Add account</button>
           </div>
           <div class="quick-grid">
@@ -62,9 +62,19 @@
         </section>
 
         <section class="page" id="investments">
-          <div class="page-toolbar"><p class="quiet">Track positions and contributions. Orders are never placed from Vaultfolio.</p><button class="button button-gold" data-action="open-investment">Add investment</button></div>
+          <div class="page-toolbar"><p class="quiet">Your US and Brazilian holdings, in their own currencies.</p><button class="button button-gold" data-action="open-investment">Add investment</button></div>
           <div class="metric-row"><div class="metric"><span>Invested</span><strong id="investedTotal">$0.00</strong></div><div class="metric"><span>Current value</span><strong id="investmentValue">$0.00</strong></div><div class="metric"><span>Return</span><strong id="investmentReturn">—</strong></div></div>
+          <p class="currency-note">Totals are shown separately by currency.</p>
           <div class="holding-list" id="investmentsList"></div>
+          <details class="dividend-section">
+            <summary>Dividend income</summary>
+            <div class="dividend-content">
+              <div class="page-toolbar"><p class="quiet">Record received dividends and upcoming payments.</p><button class="button button-gold" data-action="open-dividend">Add dividend</button></div>
+              <div class="metric-row"><div class="metric"><span>Received</span><strong id="dividendReceived">—</strong></div><div class="metric"><span>Scheduled</span><strong id="dividendScheduled">—</strong></div><div class="metric"><span>Income records</span><strong id="dividendCount">0</strong></div></div>
+              <p class="currency-note">Totals are shown separately by currency.</p>
+              <div class="list" id="dividendsList"></div>
+            </div>
+          </details>
         </section>
 
         <section class="page" id="subscriptions">
@@ -75,18 +85,20 @@
 
         <section class="page assistant-page" id="assistant">
           <div class="assistant-intro"><div><p class="eyebrow">VAULT ASSISTANT</p><h2>Ask about your financial picture.</h2><p>Private, on-device guidance based only on the records you add to Vaultfolio.</p></div><span class="assistant-status"><i></i> No external access</span></div>
-          <div class="assistant-layout"><section class="assistant-panel"><div id="assistantMessages" class="assistant-messages" aria-live="polite"></div><form id="assistantForm" class="assistant-input"><input id="assistantQuestion" autocomplete="off" placeholder="Try: What is my monthly spending?" /><button class="button button-gold">Ask</button></form></section><aside class="assistant-prompts"><p class="eyebrow">QUICK QUESTIONS</p><button data-assistant-prompt="What is my total balance?">Total balance</button><button data-assistant-prompt="How much are my subscriptions?">Subscription cost</button><button data-assistant-prompt="How are my investments doing?">Investment return</button><button data-assistant-prompt="Show my accounts">Show accounts</button><p>This assistant never accesses your computer, bank login, files, or camera without a separate action you initiate.</p></aside></div>
+          <div class="assistant-layout"><section class="assistant-panel"><div id="assistantMessages" class="assistant-messages" aria-live="polite"></div><form id="assistantForm" class="assistant-input"><input id="assistantQuestion" autocomplete="off" placeholder="Try: What is my monthly spending?" /><button class="button button-gold">Ask</button></form></section><aside class="assistant-prompts"><p class="eyebrow">QUICK QUESTIONS</p><button data-assistant-prompt="What is my total balance?">Total balance</button><button data-assistant-prompt="How much are my subscriptions?">Subscription cost</button><button data-assistant-prompt="How are my investments doing?">Investment return</button><button data-assistant-prompt="How much dividend income have I received?">Dividend income</button><button data-assistant-prompt="Show my accounts">Show accounts</button><p>This assistant never accesses your computer, bank login, files, or camera without a separate action you initiate.</p></aside></div>
         </section>
 
         <section class="page manual-page" id="manual">
           <div class="manual-hero"><p class="eyebrow">A CALM, PRIVATE SYSTEM</p><h2>Everything you need,<br />explained separately.</h2><p>This manual keeps the workspace focused on action.</p></div>
           <div class="manual-grid">
-            <article><span>01</span><h3>Accounts & movements</h3><p>Add balances manually, then log income, expenses or transfers. Your overview calculates the total from the current account balances.</p></article>
-            <article><span>02</span><h3>Investments</h3><p>Track what you own and its value. Vaultfolio does not execute trades and does not connect to a broker in this version.</p></article>
+            <article><span>01</span><h3>Accounts & movements</h3><p>Record US and Brazilian accounts in their original currency. Add balances manually, then log income, expenses or transfers. Your overview uses the current account balances.</p></article>
+            <article><span>02</span><h3>Investment holdings</h3><p>Track dividend stocks, ETFs, FIIs, REITs, bonds, crypto and currency positions. Enter the cost and current value of each holding manually. Vaultfolio records your portfolio; purchases and sales happen through your broker.</p></article>
             <article><span>03</span><h3>Subscriptions</h3><p>Add the billing amount, cadence and next renewal. Monthly and yearly costs are calculated automatically.</p></article>
             <article><span>04</span><h3>QR import & share</h3><p>Use the QR button on an account to export its non-sensitive record. Import that code on another device. Camera scanning uses your browser only; paste is always available.</p></article>
             <article><span>05</span><h3>Your privacy</h3><p>Your records are stored in this browser's local storage. No bank credentials, card numbers, or trade instructions are collected or sent by this app.</p></article>
-            <article><span>06</span><h3>Live bank connections</h3><p>Real bank or brokerage connections require a regulated provider and a secure authorization flow. Do not use a QR code as a substitute for bank authentication.</p></article>
+            <article><span>06</span><h3>Live connections & trading</h3><p>Bank sync, brokerage connections and order execution are not connected in this version. A real connection needs the provider's secure authorization flow. An account QR shares a record; it does not authorize bank access.</p></article>
+            <article><span>07</span><h3>Dividend income</h3><p>Open Dividend income under Investments to log a payment and choose Scheduled or Received. Received totals include only payments marked received. Scheduled totals show expected income. Logging a dividend does not automatically credit an account balance.</p></article>
+            <article><span>08</span><h3>Currencies & totals</h3><p>Keep each account, holding, subscription and dividend in its own currency. USD and BRL records remain separate. Totals are grouped by currency, with no exchange-rate conversion or combined global total.</p></article>
           </div>
         </section>
       </main>
@@ -95,6 +107,7 @@
     <dialog id="entryDialog" class="dialog"><form method="dialog" id="entryForm"><div class="dialog-head"><div><p class="eyebrow" id="dialogEyebrow">NEW RECORD</p><h2 id="dialogTitle">Add account</h2></div><button type="button" aria-label="Close" class="icon-button" data-entry-close>×</button></div><div id="formFields"></div><div class="dialog-actions"><button type="button" class="button button-quiet" data-entry-close>Cancel</button><button class="button button-gold" id="formSubmit" value="default">Save</button></div></form></dialog>
     <dialog id="qrDialog" class="dialog qr-dialog"><form method="dialog"><div class="dialog-head"><div><p class="eyebrow" id="qrEyebrow">ACCOUNT QR</p><h2 id="qrTitle">Share account</h2></div><button aria-label="Close" class="icon-button" value="cancel">×</button></div><div id="qrContent"></div><div class="dialog-actions"><button class="button button-quiet" value="cancel">Close</button></div></form></dialog>
     <div id="toast" role="status" aria-live="polite"></div>
+    <script src="finance.js"></script>
     <script src="app.js"></script>
     <script src="assistant.js"></script>
   </body>
